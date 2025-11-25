@@ -47,7 +47,6 @@ cd Datenbank-Projekt
 
 ### 2. Mit Docker starten (empfohlen)
 ```bash
-cd database
 docker-compose up -d
 ```
 
@@ -55,15 +54,27 @@ Dies startet:
 - PostgreSQL Datenbank auf Port `5432`
 - pgAdmin auf Port `8080` (http://localhost:8080)
 - FastAPI Backend auf Port `8000` (http://localhost:8000)
+- React Frontend auf Port `3000` (http://localhost:3000)
 
-### 3. Frontend separat starten
+#### Nur bestimmte Services starten
+```bash
+# Nur Datenbank und Backend
+docker-compose up -d db api
+
+# Nur Frontend neu bauen
+docker-compose build frontend
+docker-compose up -d frontend
+```
+
+### 3. Frontend separat im Dev-Modus starten (Alternative)
+Wenn Sie das Frontend lokal entwickeln möchten (mit Hot-Reload):
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Das Frontend läuft auf http://localhost:5173
+Das Frontend läuft dann auf http://localhost:5173
 
 ## 📦 Manuelle Installation (ohne Docker)
 
@@ -115,6 +126,10 @@ npm run preview    # Preview Production Build
 npm run lint       # ESLint Check
 ```
 
+#### Docker vs Lokaler Dev-Server
+- **Docker (Port 3000)**: Production-Build mit nginx, optimiert und minimiert
+- **Lokal (Port 5173)**: Development-Server mit Hot-Reload für schnelle Entwicklung
+
 ### Backend Development
 ```bash
 cd backend
@@ -143,7 +158,7 @@ npm run test
 ## 📝 Projektspezifische Hinweise
 
 ### Umgebungsvariablen
-Für die Produktion sollten Sie `.env`-Dateien erstellen:
+Die `.env`-Dateien sind bereits vorkonfiguriert:
 
 **Backend** (`backend/.env`):
 ```env
@@ -154,6 +169,8 @@ DATABASE_URL=postgresql+psycopg2://appuser:secretpassword@localhost:5432/termine
 ```env
 VITE_API_URL=http://localhost:8000
 ```
+
+Die Frontend-API-URL kann beim Docker-Build über `docker-compose.yml` angepasst werden.
 
 ### JetBrains IDE Konfiguration
 Das Projekt enthält `.idea` Ordner für JetBrains IDEs. Öffnen Sie einfach das Hauptverzeichnis in Ihrer IDE.
