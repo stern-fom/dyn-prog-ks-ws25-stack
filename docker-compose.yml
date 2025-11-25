@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  # PostgreSQL Datenbank
+  db:
+    image: postgres:16
+    container_name: termine-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: termine_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - app-network
+
+  # pgAdmin für Datenbankverwaltung
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: termine-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpw
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # FastAPI Backend
+  api:
+    build: ./backend
+    container_name: termine-api
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://appuser:secretpassword@db:5432/termine_db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - app-network
+
+  # Optional: Frontend (kann auch separat mit npm run dev gestartet werden)
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: termine-frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

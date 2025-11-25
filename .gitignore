@@ -1,0 +1,90 @@
+# ===============================
+# JetBrains IDEs
+# ===============================
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+
+# ===============================
+# Frontend (Node.js/React/Vite)
+# ===============================
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+*.local
+
+# ===============================
+# Backend (Python/FastAPI)
+# ===============================
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+backend/.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# ===============================
+# Database
+# ===============================
+# PostgreSQL data (aber Initialisierungs-Skripte erlauben)
+*.sqlite
+*.db
+
+# SQL Dateien ausschließen, außer init/seed Skripte
+*.sql
+!database/db/*.sql
+!**/init*.sql
+!**/seed*.sql
+
+# Docker volumes (if local)
+db_data/
+
+# ===============================
+# Environment files
+# ===============================
+.env
+.env.local
+.env.*.local
+*.env
+
+# ===============================
+# OS specific
+# ===============================
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ===============================
+# Editor
+# ===============================
+.vscode/*
+!.vscode/extensions.json
